@@ -1,4 +1,3 @@
-import { any } from "zod";
 import { Attendance } from "./Attendance";
 import { Result } from "./Result";
 
@@ -14,6 +13,9 @@ export interface Student {
     sex: string;
     createdAt: string; // ISO date format
     birthday: string;  // ISO date format
+    parentId: number;
+    classId: number;
+    gradeId: number;
     attendances: Attendance[];
     results: Result[];
   }

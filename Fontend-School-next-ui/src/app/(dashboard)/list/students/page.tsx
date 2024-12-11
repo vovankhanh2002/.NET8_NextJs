@@ -58,6 +58,7 @@ const StudentListPage = () => {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 

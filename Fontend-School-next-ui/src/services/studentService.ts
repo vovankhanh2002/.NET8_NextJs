@@ -13,7 +13,7 @@ export const getStudents = async (): Promise<Student[]> => {
   return response.data;
 };
 
-export const createStudent = async (data: Omit<Student, "id">): Promise<Student> => {
+export const createStudent = async (data: any): Promise<Student> => {
   const response = await apiClient.post("/student", data);
   return response.data;
 };

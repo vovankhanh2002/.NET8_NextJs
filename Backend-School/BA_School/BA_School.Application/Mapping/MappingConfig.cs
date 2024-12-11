@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BA_School.Application.DTOs.Attendances;
+using BA_School.Application.DTOs.Classes;
+using BA_School.Application.DTOs.Lessons;
 using BA_School.Application.DTOs.Results;
 using BA_School.Application.DTOs.Students;
 using BA_School.Domain.Entities;
@@ -21,9 +23,20 @@ namespace BA_School.Application.Mapping
                 CreateMap<UpdateStudentDto, Student>();
 
                 CreateMap<Attendance, GetAttendanceDto>();
+                CreateMap<CreateAttendanceDto, Attendance>();
+                CreateMap<UpdateAttendanceDto, Attendance>();
 
                 CreateMap<Result, GetResultDto>();
+                CreateMap<CreateResultDto, Result>();
+                CreateMap<UpdateResultDto, Result>();
 
+                CreateMap<Class, GetClassDto>();
+                CreateMap<CreateClassDto, Class>();
+                CreateMap<UpdateClassDto, Class>();
+
+                CreateMap<Lesson, GetLessonDto>();
+                CreateMap<CreateLessonDto, Lesson>();
+                CreateMap<UpdateLessonDto, Lesson>();
             }
         }
     }

@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { getClasss } from "@/services/ClassService";
+import { Class } from "@/type/Class";
+import { createStudent } from "@/services/studentService";
 
 const schema = z.object({
   username: z
@@ -22,7 +26,9 @@ const schema = z.object({
   bloodType: z.string().min(1, { message: "Blood Type is required!" }),
   birthday: z.date({ message: "Birthday is required!" }),
   sex: z.enum(["male", "female"], { message: "Sex is required!" }),
-  img: z.instanceof(File, { message: "Image is required" }),
+  parentId: z.number({message:"Parent is required!"}),
+  classId: z.number({message:"Class is required!"}),
+  gradeId: z.number({message:"Grade is required!"}), 
 });
 
 type Inputs = z.infer<typeof schema>;
@@ -42,9 +48,27 @@ const StudentForm = ({
     resolver: zodResolver(schema),
   });
 
+  const [Classs, setClasss] = useState<Class[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getClasss();
+        setClasss(data);
+      } catch (error) {
+        console.error("Failed to fetch students:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
+
   const onSubmit = handleSubmit((data) => {
     console.log(data);
   });
+  if (loading) return <div>Loading...</div>;
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -139,7 +163,27 @@ const StudentForm = ({
             </p>
           )}
         </div>
-        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Class</label>
+          <select
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            {...register("parentId")}
+            defaultValue={data?.}
+          >
+            {Classs.map((parent: any) => (
+            <option key={parent.id} value={parent.id}>
+              {parent.name}
+            </option>
+          ))}
+          </select>
+          {errors.sex?.message && (
+            <p className="text-xs text-red-400">
+              {errors.sex.message.toString()}
+            </p>
+          )}
+        </div>
+
+        {/* <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
           <label
             className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
             htmlFor="img"
@@ -153,7 +197,7 @@ const StudentForm = ({
               {errors.img.message.toString()}
             </p>
           )}
-        </div>
+        </div> */}
       </div>
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
